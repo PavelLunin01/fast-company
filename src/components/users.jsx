@@ -1,7 +1,9 @@
 import React from "react";
+import api from "../api";
 
 const Users = () => {
-  return <h1>user</h1>
+  console.log(api.users.fetchAll());
+  return <h1>user</h1>;
 }
 
 export default Users;
