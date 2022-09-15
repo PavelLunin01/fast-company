@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import api from "../api";
 
 const Users = () => {
+  console.log("Почему в консоль выводится дважды эта фраза, а не один?");
 
   const [users, setUsers] = useState(api.users.fetchAll());
 
