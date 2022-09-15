@@ -2,31 +2,29 @@ import React, {useState} from "react";
 import api from "../api";
 
 const Users = () => {
-  
-  const [users, setUsers] =  useState(api.users.fetchAll());
-  
+
+  const [users, setUsers] = useState(api.users.fetchAll());
+
   const handleDelete = (userId) => {
-    setUsers((prevState) => prevState.filter(user => user !== userId));
+    setUsers(users.filter(user => user._id !== userId));
   }
-  
+
   const renderPhrase = (number) => {
-    if (number >= 2 && number <= 4) {
-      return `${number} человека тусанут с тобой`;
-    }
+    let lastOne = Number(number.toString().slice(-1));
+    if (number > 4 && number < 15) return `${number} человек тусанет с тобой`;
+    if ([2,3,4].indexOf(lastOne) >= 0) return `${number} человека тусанут с тобой`;
+    if (lastOne === 1) return `${number} человек тусанет с тобой`;
     return `${number} человек тусанет с тобой`;
   }
 
   const renderQualities = (array) => {
-    return (
-      (array.map((quality) => <span key={quality._id} className={'badge m-2 bg-' + quality.color}>{quality.name}</span>))
-    )
+    return array.map((quality) => <span key={quality._id} className={'badge m-2 bg-' + quality.color}>{quality.name}</span>)
   }
 
-
-   const renderTr = () => {
+  const renderTr = () => {
     return (
 
-        users.map((user) =>
+      users.map((user) =>
         <tr key={user._id}>
           <th scope="row">{user.name}</th>
           <td>{renderQualities(user.qualities)}</td>
@@ -34,17 +32,19 @@ const Users = () => {
           <td>{user.completedMeetings}</td>
           <td>{user.rate}</td>
           <td>
-            <button className='btn btn-danger' onClick={() => handleDelete(user)}>delete</button>
+            <button className='btn btn-danger' onClick={() => handleDelete(user._id)}>delete</button>
           </td>
         </tr>)
     );
   };
 
-  if (users.length !== 0) {
-    return (<>
-        <h2>
-          <span className='badge bg-primary' >{renderPhrase(users.length)}</span>
-        </h2>
+  return (<>
+      <h2>
+        <span className={'badge bg-' + (users.length > 0 ? 'primary' : 'danger')}>
+          {users.length > 0 ? renderPhrase(users.length) : 'Никто с тобой не тусанет'}
+        </span>
+      </h2>
+      {users.length > 0 && (
         <table className='table'>
           <thead>
           <tr>
@@ -57,17 +57,10 @@ const Users = () => {
           </tr>
           </thead>
           <tbody>
-            {renderTr()}
+          {renderTr()}
           </tbody>
         </table>
-      </>
-    );
-  };
-  return (
-    <>
-      <h2>
-        <span className='badge bg-danger' >Никто с тобой не тусанет</span>
-      </h2>
+      )}
     </>
   );
 };
