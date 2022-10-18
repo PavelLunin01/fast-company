@@ -6,6 +6,8 @@ import GroupList from "./groupList";
 import api from "../api";
 import SearchStatus from "./searchStatus";
 import _ from "lodash";
+import User from "./user";
+import { useParams } from "react-router-dom";
 
 const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,6 +57,18 @@ const Users = () => {
   const handleSort = (item) => {
     setSortBy(item);
   };
+
+  const params = useParams();
+  const { userId } = params;
+
+  if (userId) {
+    return (
+      <>
+        {<User id={userId}/>}
+      </>
+    );
+  }
+
   if (users) {
     const filteredUsers = selectedProf ? users.filter(item => JSON.stringify(item.profession) === JSON.stringify(selectedProf)) : users;
     const count = filteredUsers.length;
