@@ -3,11 +3,13 @@ import UsersTable from "./usersTable";
 import Pagination from "./pagination";
 import { paginate } from "../utils/paginate";
 import GroupList from "./groupList";
-import api from "../api";
 import SearchStatus from "./searchStatus";
 import _ from "lodash";
+import api from "../api";
+import Searchbar from "./Searchbar";
 
 const UsersList = () => {
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [professions, setProfessions] = useState();
   const [selectedProf, setSelectedProf] = useState();
@@ -56,6 +58,14 @@ const UsersList = () => {
     setSortBy(item);
   };
 
+  const handlerName = ({ target }) => {
+    setSearchQuery(target.value);
+  };
+
+  useEffect(() => {
+    console.log(searchQuery);
+  }, [searchQuery]);
+
   if (users) {
     const filteredUsers = selectedProf ? users.filter(item => JSON.stringify(item.profession) === JSON.stringify(selectedProf)) : users;
     const count = filteredUsers.length;
@@ -65,6 +75,7 @@ const UsersList = () => {
     const clearFilter = () => {
       setSelectedProf();
     };
+
     return (
       <div className="d-flex justify-content-center">
         {professions && (
@@ -79,13 +90,17 @@ const UsersList = () => {
         <div className="d-flex flex-column">
           <SearchStatus length={count}/>
           {count > 0 && (
-            <UsersTable
-              users={userCrop}
-              selectedSort={sortBy}
-              onDelete={handleDelete}
-              onToggleBookMark={handleToggleBookMark}
-              onSort={handleSort}
-            />)}
+            <div>
+              <Searchbar name={searchQuery} onHandlerName={handlerName} />
+              <UsersTable
+                users={userCrop}
+                selectedSort={sortBy}
+                onDelete={handleDelete}
+                onToggleBookMark={handleToggleBookMark}
+                onSort={handleSort}
+              />
+            </div>
+            )}
           <div className="d-flex justify-content-center">
             <Pagination
               itemsCount={count}
