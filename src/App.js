@@ -8,12 +8,12 @@ import Main from "./layouts/main";
 const App = () => {
   return (
     <>
-      <NavBar/>
+      <NavBar />
       <Switch>
-        <Route path="/users/:userId?" component={Users}/>
-        <Route path="/login" component={Login}/>
-        <Route path="/" exact component={Main}/>
-        <Redirect to="/"/>
+        <Route path="/users/:userId?" component={Users} />
+        <Route path="/login" component={Login} />
+        <Route path="/" exact component={Main} />
+        <Redirect to="/" />
       </Switch>
     </>
   );

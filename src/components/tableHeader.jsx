@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
-  const arrowUp = <i className="bi bi-caret-up-fill"></i>;
-  const arrowDown = <i className="bi bi-caret-down-fill"></i>;
   const handleSort = (item) => {
     if (selectedSort.path === item) {
       onSort({
@@ -14,31 +12,36 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
       onSort({ path: item, order: "asc" });
     }
   };
-  const renderArrow = (item) => {
-    if (selectedSort.path === item.path) {
+
+  const renderSortArrow = (selectedSort, currentPath) => {
+    if (selectedSort.path === currentPath) {
       if (selectedSort.order === "asc") {
-        return arrowDown;
-      }
-      if (selectedSort.order === "desc") {
-        return arrowUp;
+        return <i className="bi bi-caret-down-fill"></i>;
+      } else {
+        return <i className="bi bi-caret-up-fill"></i>;
       }
     }
+    return null;
   };
   return (
     <thead>
       <tr>
-        {Object.keys(columns).map(column => (
+        {Object.keys(columns).map((column) => (
           <th
             key={column}
-            onClick={columns[column].path ? () => handleSort(columns[column].path) : undefined}
+            onClick={
+              columns[column].path
+                ? () => handleSort(columns[column].path)
+                : undefined
+            }
             scope="col"
             {...{ role: columns[column].path && "button" }}
+            // role={columns[column].path ? "button" : undefined}
           >
             {columns[column].name}
-            {renderArrow(columns[column])}
+            {renderSortArrow(selectedSort, columns[column].path)}
           </th>
         ))}
-
       </tr>
     </thead>
   );

@@ -5,30 +5,16 @@ import QualitiesList from "./qualitiesList";
 import Table from "./table";
 import { Link } from "react-router-dom";
 
-const UsersTable = (
-  {
-    users,
-    onSort,
-    selectedSort,
-    onToggleBookMark,
-    onDelete,
-    searchName
-  }) => {
+const UsersTable = ({ users, onSort, selectedSort, onToggleBookMark, onDelete }) => {
   const columns = {
     name: {
       path: "name",
       name: "Имя",
-      component: (user) => (
-        <Link to={`/users/${user._id}`}>{user.name}</Link>
-      )
+      component: (user) => <Link to={`/users/${user._id}`}>{user.name}</Link>
     },
     qualities: {
       name: "Качества",
-      component: (user) => (
-        <QualitiesList
-          qualities={user.qualities}
-        />
-      )
+      component: (user) => <QualitiesList qualities={user.qualities}/>
     },
     profession: { path: "profession.name", name: "Профессия" },
     completedMeetings: { path: "completedMeetings", name: "Встретился, раз" },
@@ -53,7 +39,7 @@ const UsersTable = (
   };
   return (
     <>
-      <Table {...{ selectedSort, onSort, columns, data: users, searchName }}/>
+      <Table {...{ selectedSort, onSort, columns, data: users }} />
     </>
   );
 };
@@ -62,6 +48,6 @@ UsersTable.propTypes = {
   onSort: PropTypes.func.isRequired,
   selectedSort: PropTypes.object.isRequired,
   onToggleBookMark: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 export default UsersTable;

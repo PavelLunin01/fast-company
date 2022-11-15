@@ -2,11 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Qualities = ({ color, name }) => {
-  return (
-    <span className={"badge m-2 bg-" + color} >
-      {name}
-    </span>
-  );
+  return <span className={"badge m-2 bg-" + color}>{name}</span>;
 };
 
 Qualities.propTypes = {

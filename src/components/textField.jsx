@@ -7,7 +7,7 @@ const TextField = ({ label, type, name, value, onChange, error }) => {
     return "form-control" + (error ? " is-invalid" : "");
   };
   const toggleShowPassword = () => {
-    setShowPassword(prevState => !prevState);
+    setShowPassword((prevState) => !prevState);
   };
   return (
     <div className="mb-4">

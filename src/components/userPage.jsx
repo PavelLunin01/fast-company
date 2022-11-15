@@ -22,15 +22,13 @@ const UserPage = ({ id }) => {
       <div>
         <h1>{user.name}</h1>
         <h2>Профессия: {user.profession.name}</h2>
-        <QualitiesList qualities={user.qualities}/>
+        <QualitiesList qualities={user.qualities} />
         <p>completedMeetings: {user.completedMeetings}</p>
         <h2>rate: {user.rate}</h2>
-        <button onClick={handleClick}>
-          Все пользователи
-        </button>
+        <button onClick={handleClick}>Все пользователи</button>
       </div>
     );
-  };
+  }
   return <h1>loading...</h1>;
 };
 UserPage.propTypes = {
