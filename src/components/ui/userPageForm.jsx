@@ -78,7 +78,13 @@ const UserPageForm = () => {
     console.log(data);
   };
   if (userForm) {
-    console.log(userForm);
+    const getQualities = (arrayQualities) => {
+      let arrayQual = [];
+
+      arrayQualities.map((qualities) => arrayQual.push({label: qualities.name}));
+      return arrayQual
+    };
+
     return (
       <div className="container mt-5">
         <div className="row">
@@ -87,20 +93,20 @@ const UserPageForm = () => {
               <TextField
                 label="Ваше имя"
                 name="userName"
-                value={data.userName}
+                value={data.userName = userForm.name}
                 onChange={handleChange}
                 error={errors.userName}
               />
               <TextField
                 label="Электроннаяя почта"
                 name="email"
-                value={data.email}
+                value={data.email = userForm.email}
                 onChange={handleChange}
                 error={errors.email}
               />
               <SelectedField
                 label="Выберите профессию"
-                value={data.profession}
+                value={data.profession = userForm.profession.name}
                 onChange={handleChange}
                 defaultOption="Choose..."
                 options={professions}
@@ -113,14 +119,14 @@ const UserPageForm = () => {
                   {name: "Female", value: "female"},
                   {name: "Other", value: "other"}
                 ]}
-                value={data.sex}
+                value={data.sex = userForm.sex}
                 onChange={handleChange}
                 name="sex"
                 label="Выберите ваш пол"
               />
               <MultiSelectField
                 options={qualities}
-                defaultValue={data.qualities}
+                defaultValue={data.qualities = getQualities(userForm.qualities)}
                 onChange={handleChange}
                 name="qualities"
                 label="Выберите ваши качества"

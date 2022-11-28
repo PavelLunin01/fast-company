@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import LoginForm from "../components/ui/loginForm";
 import RegisterForm from "../components/ui/registerForm";
 import { useParams } from "react-router-dom";
-/*import UserPageForm from "../components/page/userPageForm/userPageForm";*/
 
 const Login = () => {
   const { form } = useParams();
