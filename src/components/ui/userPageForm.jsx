@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
 import api from "../../api";
@@ -9,14 +9,14 @@ import MultiSelectField from "../common/form/multiSelectField";
 
 const UserPageForm = () => {
   const { userId } = useParams();
-  const [userForm, setUserForm] = useState();
+  const history = useHistory();
   const [errors, setErrors] = useState({});
   const [qualities, setQualities] = useState({});
   const [professions, setProfessions] = useState([]);
 
   const [data, setData] = useState(
     {
-      userName: "",
+      name: "",
       email: "",
       profession: "",
       sex: "male",
@@ -24,10 +24,61 @@ const UserPageForm = () => {
     }
   );
 
+  const getProfessionById = (id) => {
+    for (const prof in professions) {
+      const profData = professions[prof];
+      if (profData._id === id) return profData;
+    }
+  };
+
+  const getQualities = (elements) => {
+    const qualitiesArray = [];
+    for (const elem of elements) {
+      for (const quality in qualities) {
+        if (elem.value === qualities[quality]._id) {
+          qualitiesArray.push(qualities[quality]);
+        }
+      }
+    }
+    return qualitiesArray;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const isValid = validate();
+    if (!isValid) return;
+
+    const { profession, qualities } = data;
+    api.users
+      .update(userId, {
+        ...data,
+        profession: getProfessionById(profession),
+        qualities: getQualities(qualities)
+      })
+      .then((data) => history.push(`/users/${data._id}`));
+  };
+
+  const getArrayQualities = (arrayQualities) => {
+    let qualitiesArray = [];
+
+    arrayQualities.map((qualities) => qualitiesArray.push({label: qualities.name, value: qualities._id}));
+    return qualitiesArray;
+  };
+
   useEffect(() => {
-    api.users.getById(userId).then((data) => setUserForm(data));
-    api.professions.fetchAll().then((data) => setProfessions(data));
+    api.users.getById(userId).then(({ name, email, sex, profession, qualities, ...data }) =>
+      setData((prevState) => ({
+        ...prevState,
+        ...data,
+        name: name,
+        email: email,
+        sex: sex,
+        profession: profession._id,
+        qualities: getArrayQualities(qualities),
+      }))
+    );
     api.qualities.fetchAll().then((data) => setQualities(data));
+    api.professions.fetchAll().then((data) => setProfessions(data));
   }, []);
 
   const handleChange = (target) => {
@@ -38,7 +89,7 @@ const UserPageForm = () => {
   };
 
   const validatorConfig = {
-    userName: {
+    name: {
       isRequired: {
         message: "Введите ваше имя"
       }
@@ -70,21 +121,7 @@ const UserPageForm = () => {
 
   const isValid = Object.keys(errors).length === 0;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const isValid = validate();
-    if (!isValid) return;
-
-    console.log(data);
-  };
-  if (userForm) {
-    const getQualities = (arrayQualities) => {
-      let arrayQual = [];
-
-      arrayQualities.map((qualities) => arrayQual.push({label: qualities.name}));
-      return arrayQual
-    };
-
+  if (data.email) {
     return (
       <div className="container mt-5">
         <div className="row">
@@ -92,21 +129,21 @@ const UserPageForm = () => {
             <form onSubmit={handleSubmit}>
               <TextField
                 label="Ваше имя"
-                name="userName"
-                value={data.userName = userForm.name}
+                name="name"
+                value={data.name}
                 onChange={handleChange}
-                error={errors.userName}
+                error={errors.name}
               />
               <TextField
                 label="Электроннаяя почта"
                 name="email"
-                value={data.email = userForm.email}
+                value={data.email}
                 onChange={handleChange}
                 error={errors.email}
               />
               <SelectedField
                 label="Выберите профессию"
-                value={data.profession = userForm.profession.name}
+                value={data.profession}
                 onChange={handleChange}
                 defaultOption="Choose..."
                 options={professions}
@@ -119,14 +156,14 @@ const UserPageForm = () => {
                   {name: "Female", value: "female"},
                   {name: "Other", value: "other"}
                 ]}
-                value={data.sex = userForm.sex}
+                value={data.sex}
                 onChange={handleChange}
                 name="sex"
                 label="Выберите ваш пол"
               />
               <MultiSelectField
                 options={qualities}
-                defaultValue={data.qualities = getQualities(userForm.qualities)}
+                defaultValue={data.qualities}
                 onChange={handleChange}
                 name="qualities"
                 label="Выберите ваши качества"
@@ -144,15 +181,15 @@ const UserPageForm = () => {
       </div>
     );
   }
-    return (
-      <div className="container mt-5">
-        <div className="row">
-          <div className="col-md-6 offset-md-3 shadow p-4">
-            <h1>Loading...</h1>
-          </div>
+  return (
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-6 offset-md-3 shadow p-4">
+          <h1>Loading...</h1>
         </div>
       </div>
-    )
+    </div>
+  )
 
 };
 
