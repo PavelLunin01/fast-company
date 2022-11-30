@@ -59,10 +59,7 @@ const UserPageForm = () => {
   };
 
   const getArrayQualities = (arrayQualities) => {
-    let qualitiesArray = [];
-
-    arrayQualities.map((qualities) => qualitiesArray.push({label: qualities.name, value: qualities._id}));
-    return qualitiesArray;
+    return arrayQualities.map((qualities) => ({label: qualities.name, value: qualities._id, color: qualities.color}));
   };
 
   useEffect(() => {
@@ -80,7 +77,6 @@ const UserPageForm = () => {
     api.qualities.fetchAll().then((data) => setQualities(data));
     api.professions.fetchAll().then((data) => setProfessions(data));
   }, []);
-
   const handleChange = (target) => {
     setData((prevState) => ({
       ...prevState,
