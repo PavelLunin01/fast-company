@@ -59,7 +59,7 @@ const UserPageForm = () => {
   };
 
   const getArrayQualities = (arrayQualities) => {
-    return arrayQualities.map((qualities) => ({label: qualities.name, value: qualities._id, color: qualities.color}));
+    return arrayQualities.map((qualities) => ({ label: qualities.name, value: qualities._id, color: qualities.color }));
   };
 
   useEffect(() => {
@@ -71,12 +71,13 @@ const UserPageForm = () => {
         email: email,
         sex: sex,
         profession: profession._id,
-        qualities: getArrayQualities(qualities),
+        qualities: getArrayQualities(qualities)
       }))
     );
     api.qualities.fetchAll().then((data) => setQualities(data));
     api.professions.fetchAll().then((data) => setProfessions(data));
   }, []);
+
   const handleChange = (target) => {
     setData((prevState) => ({
       ...prevState,
@@ -102,7 +103,7 @@ const UserPageForm = () => {
       isRequired: {
         message: "Выберите вашу профессию"
       }
-    },
+    }
   };
 
   useEffect(() => {
@@ -117,7 +118,9 @@ const UserPageForm = () => {
 
   const isValid = Object.keys(errors).length === 0;
 
-  if (data.email) {
+  const isData = data && Object.keys(qualities).length > 0 && Object.keys(qualities).length > 0;
+
+  if (isData) {
     return (
       <div className="container mt-5">
         <div className="row">
@@ -148,9 +151,9 @@ const UserPageForm = () => {
               />
               <RadioForm
                 options ={[
-                  {name: "Male", value: "male"},
-                  {name: "Female", value: "female"},
-                  {name: "Other", value: "other"}
+                  { name: "Male", value: "male" },
+                  { name: "Female", value: "female" },
+                  { name: "Other", value: "other" }
                 ]}
                 value={data.sex}
                 onChange={handleChange}
@@ -185,9 +188,7 @@ const UserPageForm = () => {
         </div>
       </div>
     </div>
-  )
-
+  );
 };
 
 export default UserPageForm;
-

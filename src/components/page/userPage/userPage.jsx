@@ -11,12 +11,6 @@ const UserPage = ({ id }) => {
     api.users.getById(id).then((data) => setUser(data));
   }, []);
 
-  /*const history = useHistory();
-
-  const handleClick = () => {
-    history.push(`/users`);
-  };*/
-
   if (user) {
     return (
       <div>
@@ -28,12 +22,10 @@ const UserPage = ({ id }) => {
         <Link to={`/users/${id}/edit`}>
           <button >Изменить</button>
         </Link>
-
-        {/*<button onClick={handleClick}>Изменить</button>*/}
       </div>
     );
   }
-  return <h1>loading...</h1>;
+  return <h1>Loading...</h1>;
 };
 UserPage.propTypes = {
   id: PropTypes.string.isRequired

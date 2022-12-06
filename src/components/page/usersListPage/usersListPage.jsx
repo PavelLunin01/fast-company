@@ -131,7 +131,7 @@ const UsersListPage = () => {
       </div>
     );
   }
-  return "Loading...";
+  return <h1>Loading...</h1>;
 };
 
 export default UsersListPage;
