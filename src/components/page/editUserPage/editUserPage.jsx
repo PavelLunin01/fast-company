@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import { validator } from "../../utils/validator";
-import TextField from "../common/form/textField";
-import api from "../../api";
-import SelectedField from "../common/form/selectedField";
-import RadioForm from "../common/form/radioForm";
-import MultiSelectField from "../common/form/multiSelectField";
+import { validator } from "../../../utils/validator";
+import TextField from "../../common/form/textField";
+import api from "../../../api";
+import SelectedField from "../../common/form/selectedField";
+import RadioForm from "../../common/form/radioForm";
+import MultiSelectField from "../../common/form/multiSelectField";
+import BackButton from "../../common/backButton";
 
-const UserPageForm = () => {
+const EditUserPage = () => {
   const { userId } = useParams();
   const history = useHistory();
   const [errors, setErrors] = useState({});
   const [qualities, setQualities] = useState({});
   const [professions, setProfessions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [data, setData] = useState(
     {
@@ -58,11 +60,13 @@ const UserPageForm = () => {
       .then((data) => history.push(`/users/${data._id}`));
   };
 
-  const getArrayQualities = (arrayQualities) => {
-    return arrayQualities.map((qualities) => ({ label: qualities.name, value: qualities._id, color: qualities.color }));
+  const transformData = (data) => {
+    return data.map((qualities) => ({ label: qualities.name, value: qualities._id, color: qualities.color }));
   };
 
   useEffect(() => {
+    setIsLoading(true);
+
     api.users.getById(userId).then(({ name, email, sex, profession, qualities, ...data }) =>
       setData((prevState) => ({
         ...prevState,
@@ -71,12 +75,16 @@ const UserPageForm = () => {
         email: email,
         sex: sex,
         profession: profession._id,
-        qualities: getArrayQualities(qualities)
+        qualities: transformData(qualities)
       }))
     );
     api.qualities.fetchAll().then((data) => setQualities(data));
     api.professions.fetchAll().then((data) => setProfessions(data));
   }, []);
+
+  useEffect(() => {
+    if (data._id) setIsLoading(false);
+  }, [data]);
 
   const handleChange = (target) => {
     setData((prevState) => ({
@@ -118,13 +126,12 @@ const UserPageForm = () => {
 
   const isValid = Object.keys(errors).length === 0;
 
-  const isData = data && Object.keys(qualities).length > 0 && Object.keys(qualities).length > 0;
-
-  if (isData) {
-    return (
-      <div className="container mt-5">
-        <div className="row">
-          <div className="col-md-6 offset-md-3 shadow p-4">
+  return (
+    <div className="container mt-5">
+      <BackButton/>
+      <div className="row">
+        <div className="col-md-6 offset-md-3 shadow p-4">
+          {!isLoading && Object.keys(professions).length > 0 ? (
             <form onSubmit={handleSubmit}>
               <TextField
                 label="Ваше имя"
@@ -175,20 +182,13 @@ const UserPageForm = () => {
                 Обновить
               </button>
             </form>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-md-6 offset-md-3 shadow p-4">
-          <h1>Loading...</h1>
+          ) : (
+            <h1>Loading</h1>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default UserPageForm;
+export default EditUserPage;

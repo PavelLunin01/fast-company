@@ -4,15 +4,13 @@ import Users from "./layouts/users";
 import NavBar from "./components/ui/navBar";
 import Login from "./layouts/login";
 import Main from "./layouts/main";
-import UserPageForm from "./components/ui/userPageForm";
 
 const App = () => {
   return (
     <>
       <NavBar />
       <Switch>
-        <Route path="/users/:userId?/edit" component={UserPageForm} />
-        <Route path="/users/:userId?" component={Users} />
+        <Route path="/users/:userId?/:edit?" component={Users} />
         <Route path="/login/:form?" component={Login} />
         <Route path="/" exact component={Main} />
         <Redirect to="/" />
