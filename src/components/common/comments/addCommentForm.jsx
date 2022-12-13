@@ -38,7 +38,7 @@ const AddCommentForm = ({ onSubmit }) => {
   }, []);
   const clearForm = () => {
     setData(initialData);
-    /*  setUsers({}); */
+    setErrors({});
   };
   const handleSubmit = (e) => {
     e.preventDefault();
