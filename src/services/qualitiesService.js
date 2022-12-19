@@ -1,5 +1,4 @@
 import httpService from "./httpService";
-
 const qualitiesEndPoint = "quality/";
 
 const qualitiesService = {

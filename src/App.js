@@ -7,7 +7,6 @@ import Main from "./layouts/main";
 import { ToastContainer } from "react-toastify";
 import { ProfessionsProvider } from "./hooks/useProfessions";
 import { QualitiesProvider } from "./hooks/useQualities";
-
 const App = () => {
   return (
     <>
