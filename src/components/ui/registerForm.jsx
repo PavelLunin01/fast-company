@@ -28,10 +28,10 @@ const RegisterForm = () => {
   }, []);
 
   const handleChange = (target) => {
-      setData((prevState) => ({
-        ...prevState,
-        [target.name]: target.value
-      }));
+    setData((prevState) => ({
+      ...prevState,
+      [target.name]: target.value
+    }));
   };
 
   const validatorConfig = {
@@ -115,9 +115,9 @@ const RegisterForm = () => {
       />
       <RadioForm
         options ={[
-          {name: "Male", value: "male"},
-          {name: "Female", value: "female"},
-          {name: "Other", value: "other"}
+          { name: "Male", value: "male" },
+          { name: "Female", value: "female" },
+          { name: "Other", value: "other" }
         ]}
         value={data.sex}
         onChange={handleChange}

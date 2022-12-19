@@ -10,7 +10,7 @@ const TextField = ({ label, type, name, value, onChange, error }) => {
     setShowPassword((prevState) => !prevState);
   };
   const handleChange = ({ target }) => {
-    onChange({ name: target.name, value: target.value})
+    onChange({ name: target.name, value: target.value });
   };
   return (
     <div className="mb-4">

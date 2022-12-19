@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const TextAreaField = ({ label, name, value, onChange, error, type }) => {
-
   const getInputClasses = () => {
     return "form-control" + (error ? " is-invalid" : "");
   };
