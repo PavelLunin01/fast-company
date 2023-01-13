@@ -54,7 +54,6 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true
       });
       setTokens(data);
-
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;

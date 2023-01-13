@@ -60,11 +60,9 @@ const LoginForm = () => {
 
     try {
       await signIn(data);
-      console.log(data);
       history.push("/");
     } catch (error) {
       setErrors(error);
-      console.log("rrr");
     }
   };
   return (
