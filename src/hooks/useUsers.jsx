@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import userService from "../services/userService";
 
 const UserContext = React.createContext();
-export const useUser = () => {
+export const useUsers = () => {
   return useContext(UserContext);
 };
 
@@ -35,7 +35,15 @@ const UserProvider = ({ children }) => {
     const { message } = error.response.data;
     setError(message);
   }
-  return <UserContext.Provider value={{ users }}>{!isLoading ? children : "Loading..."}</UserContext.Provider>;
+
+  function getUserById(user) {
+    return users.find((u) => u._id === user);
+  };
+  return (
+    <UserContext.Provider value={{ users, getUserById }}>
+      {!isLoading ? children : "Loading..."}
+    </UserContext.Provider>
+  );
 };
 
 UserProvider.propTypes = {
