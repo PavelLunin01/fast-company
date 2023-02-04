@@ -3,7 +3,7 @@ import httpService from "./httpService";
 const professionsEndPoint = "profession/";
 
 const professionsService = {
-  get: async () => {
+  fetchAll: async () => {
     const { data } = await httpService.get(professionsEndPoint);
     return data;
   }
