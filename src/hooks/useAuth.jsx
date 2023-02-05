@@ -29,10 +29,6 @@ const AuthProvider = ({ children }) => {
       setError(null);
     }
   }, [error]);
-
-  function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  };
   async function signUp({ email, password, ...rest }) {
     try {
       const { data } = await httpAuth.post(`accounts:signUp`, {
@@ -41,18 +37,7 @@ const AuthProvider = ({ children }) => {
         returnSecureToken: true
       });
       setTokens(data);
-      await creteUser({
-        _id: data.localId,
-        email,
-        rate: randomInt(1, 5),
-        completedMeetings: randomInt(0, 200),
-        img: `https://avatars.dicebear.com/api/avataaars/${(
-          Math.random() + 1
-        )
-          .toString(36)
-          .substring(7)}.svg`,
-        ...rest
-      });
+      await creteUser();
     } catch (error) {
       errorCatcher(error);
       const { code, message } = error.response.data.error;

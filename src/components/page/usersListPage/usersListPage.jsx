@@ -6,17 +6,17 @@ import GroupList from "../../common/groupList";
 import SearchStatus from "../../ui/searchStatus";
 import _ from "lodash";
 import SearchBar from "../../searchBar";
-import { useUsers } from "../../../hooks/useUsers";
-import { useAuth } from "../../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { getProfessions, getProfessionsLoadingStatus } from "../../../store/professions";
+import { getCurrentUserId, getUserList } from "../../../store/users";
 
 const UsersListPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProf, setSelectedProf] = useState();
-  const { currentUser } = useAuth();
-  const { users } = useUsers();
+  const users = useSelector(getUserList());
+  const currentUserId = useSelector(getCurrentUserId());
+  console.log(currentUserId);
 
   const professions = useSelector(getProfessions());
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
@@ -82,7 +82,7 @@ const UsersListPage = () => {
               item.profession === selectedProf._id
           )
           : data;
-      return filteredUsers.filter((u) => u._id !== currentUser._id);
+      return filteredUsers.filter((u) => u._id !== currentUserId);
     };
     const filteredUsers = filterUsers(users);
     const count = filteredUsers.length;

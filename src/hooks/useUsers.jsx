@@ -52,7 +52,7 @@ const UserProvider = ({ children }) => {
   };
   return (
     <UserContext.Provider value={{ users, getUserById }}>
-      {!isLoading ? children : "Loading..."}
+      {!isLoading ? children : "Loading...Loading"}
     </UserContext.Provider>
   );
 };

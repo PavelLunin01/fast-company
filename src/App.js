@@ -5,19 +5,20 @@ import NavBar from "./components/ui/navBar";
 import Login from "./layouts/login";
 import Main from "./layouts/main";
 import { ToastContainer } from "react-toastify";
-// import { ProfessionsProvider } from "./hooks/useProfessions";
 import AuthProvider from "./hooks/useAuth";
 import ProtectedRoute from "./components/ui/protectedRoute";
 import LogOut from "./layouts/logOut";
 import { loadQualitiesList } from "./store/qualities";
 import { useDispatch } from "react-redux";
 import { loadProfessionsList } from "./store/professions";
+import { loadUsersList } from "./store/users";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadQualitiesList());
     dispatch(loadProfessionsList());
+    dispatch(loadUsersList());
   }, []);
 
   return (
