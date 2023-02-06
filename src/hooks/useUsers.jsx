@@ -35,7 +35,7 @@ const UserProvider = ({ children }) => {
   }, [error]);
   async function getUsers() {
     try {
-      const { content } = await userService.get();
+      const { content } = await userService.fetchAll();
       setUsers(content);
       setIsLoading(false);
     } catch (error) {
@@ -52,7 +52,7 @@ const UserProvider = ({ children }) => {
   };
   return (
     <UserContext.Provider value={{ users, getUserById }}>
-      {!isLoading ? children : "Loading...Loading"}
+      {!isLoading ? children : "Loading..."}
     </UserContext.Provider>
   );
 };

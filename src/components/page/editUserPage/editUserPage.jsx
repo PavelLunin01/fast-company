@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { validator } from "../../../utils/validator";
 import TextField from "../../common/form/textField";
-
 import SelectedField from "../../common/form/selectedField";
 import RadioForm from "../../common/form/radioForm";
 import MultiSelectField from "../../common/form/multiSelectField";
 import BackButton from "../../common/backButton";
-
-import { useAuth } from "../../../hooks/useAuth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getQualities, getQualitiesLoadingStatus } from "../../../store/qualities";
 import { getProfessions, getProfessionsLoadingStatus } from "../../../store/professions";
+import { getCurrentUserData, updateUserData } from "../../../store/users";
 
 const EditUserPage = () => {
-  const history = useHistory();
   const [errors, setErrors] = useState({});
-  const { currentUser, updateUserData } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState();
 
+  const currentUser = useSelector(getCurrentUserData());
   const professions = useSelector(getProfessions());
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
   const qualities = useSelector(getQualities());
   const qualitiesLoading = useSelector(getQualitiesLoadingStatus());
+  const dispatch = useDispatch();
 
   const qualitiesList = qualities.map((q) => ({
     label: q.name,
@@ -65,18 +62,15 @@ const EditUserPage = () => {
     if (data && isLoading) setIsLoading(false);
   }, [data]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const isValid = validate();
     if (!isValid) return;
     const newData = { ...data, qualities: data.qualities.map((q) => q.value) };
-    try {
-      await updateUserData(newData);
-      history.push(`/users/${currentUser._id}`);
-    } catch (error) {
-      setErrors(error);
-    }
+
+    dispatch(updateUserData(newData));
   };
+
   const handleChange = (target) => {
     setData((prevState) => ({
       ...prevState,

@@ -16,7 +16,6 @@ const UsersListPage = () => {
   const [selectedProf, setSelectedProf] = useState();
   const users = useSelector(getUserList());
   const currentUserId = useSelector(getCurrentUserId());
-  console.log(currentUserId);
 
   const professions = useSelector(getProfessions());
   const professionsLoading = useSelector(getProfessionsLoadingStatus());
