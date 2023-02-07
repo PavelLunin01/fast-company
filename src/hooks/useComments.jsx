@@ -18,6 +18,7 @@ export const CommentsProvider = ({ children }) => {
   const { userId } = useParams();
   const [error, setError] = useState(null);
   const currentUserId = useSelector(getCurrentUserId());
+
   useEffect(() => {
     getComments();
   }, [userId]);

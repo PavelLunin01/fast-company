@@ -2,22 +2,20 @@ import React, { useEffect, useState } from "react";
 import TextField from "../common/form/textField";
 import { validator } from "../../utils/validator";
 import CheckBoxField from "../common/form/checkBoxField";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import history from "../../utils/history";
-import { login } from "../../store/users";
+import { getErrorsAuth, login } from "../../store/users";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-
+  const loginError = useSelector(getErrorsAuth());
   const [data, setData] = useState({ email: "", password: "", stayOn: false });
   const [errors, setErrors] = useState({});
-  const [enterError, setEnterError] = useState(null);
   const handleChange = (target) => {
     setData((prevState) => ({
       ...prevState,
       [target.name]: target.value
     }));
-    setEnterError(null);
   };
 
   const validatorConfig = {
@@ -72,10 +70,10 @@ const LoginForm = () => {
       <CheckBoxField name="stayOn" value={data.stayOn} onChange={handleChange}>
         Остаться в системе
       </CheckBoxField>
-      {enterError && <p className="text-danger">{enterError}</p>}
+      {loginError && <p className="text-danger">{loginError}</p>}
       <button
         type="submit"
-        disabled={!isValid || enterError}
+        disabled={!isValid}
         className="btn btn-primary w-100 mx-auto"
       >
         Submit
