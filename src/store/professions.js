@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { isOutDated } from "./qualities";
 import professionsService from "../services/professionsService";
+import isOutDated from "../utils/isOutDated";
 
 const professionsSlice = createSlice({
   name: "professions",
@@ -44,10 +44,8 @@ export const loadProfessionsList = () => async (dispatch, getState) => {
 
 export const getProfessionById = (professionsId) => (state) => {
   if (state.professions.entities) {
-    const professionsArray = state.professions.entities;
-    return professionsArray.find((p) => p._id === professionsId);
-  }
-  return [];
+    return state.professions.entities.find((p) => p._id === professionsId);
+  };
 };
 
 export const getProfessions = () => (state) => {
